@@ -34,12 +34,11 @@ export default class NewBill {
 
     const formData = new FormData();
     const email = JSON.parse(localStorage.getItem("user")).email;
-    formData.append("file", file);
-    formData.append("email", email);
 
     // Empêcher la saisie d'un document qui a une extension différente de jpg, jpeg ou png
     if (fileTypes.includes(file.type)) {
-      const formData = new FormData();
+      // const formData = new FormData();
+      document.getElementById("requiredExtension").classList.remove("error");
       const email = JSON.parse(localStorage.getItem("user")).email;
       formData.append("file", file);
       formData.append("email", email);
@@ -53,7 +52,7 @@ export default class NewBill {
           },
         })
         .then(({ fileUrl, key }) => {
-          console.log(fileUrl);
+          // console.log(fileUrl);
           this.billId = key;
           this.fileUrl = fileUrl;
           this.fileName = fileName;
@@ -62,6 +61,7 @@ export default class NewBill {
     } else {
       console.error(`Désolé, cette extension n'est pas autorisée ${fileName}`);
       fileInput.value = "";
+      document.getElementById("requiredExtension").classList.add("error");
     }
   };
 
