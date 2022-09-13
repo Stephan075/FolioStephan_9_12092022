@@ -39,7 +39,6 @@ export default class NewBill {
     if (fileTypes.includes(file.type)) {
       // const formData = new FormData();
       document.getElementById("requiredExtension").classList.remove("error");
-      const email = JSON.parse(localStorage.getItem("user")).email;
       formData.append("file", file);
       formData.append("email", email);
 
@@ -52,7 +51,6 @@ export default class NewBill {
           },
         })
         .then(({ fileUrl, key }) => {
-          // console.log(fileUrl);
           this.billId = key;
           this.fileUrl = fileUrl;
           this.fileName = fileName;
