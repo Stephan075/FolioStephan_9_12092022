@@ -11,6 +11,8 @@ import Bills from "../containers/Bills.js";
 
 import router from "../app/Router.js";
 
+import mockStore from "../__mocks__/store";
+
 describe("Given I am connected as an employee", () => {
   describe("When I am on Bills Page", () => {
     test("Then bill icon in vertical layout should be highlighted", async () => {
@@ -84,6 +86,62 @@ describe("Given I am connected as an employee", () => {
       const modale = document.getElementById("modaleFile");
 
       expect(modale).toBeTruthy();
+    });
+  });
+});
+
+//test d'intégration GET
+describe("Given I am a user connected as Employee", () => {
+  describe("When I navigate to Bills page", () => {
+    test("fetch bills from mock API GET", async () => {
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ type: "Employee", email: "a@a" })
+      );
+      const root = document.createElement("div");
+      root.setAttribute("id", "root");
+      document.body.append(root);
+      router();
+      window.onNavigate(ROUTES_PATH.Bills);
+      //  on s'attend  que sur la page ya le text : Mes notes de frais
+      await waitFor(() => screen.getByText("Mes notes de frais"));
+
+      const tbody = document.querySelector("tbody");
+
+      // et que le tbody à au moins 1 data
+      expect(tbody.rows.length).toBeGreaterThan(0);
+    });
+  });
+  describe("When an error occurs on API", () => {
+    beforeEach(() => {
+      jest.spyOn(mockStore, "bills");
+      Object.defineProperty(window, "localStorage", {
+        value: localStorageMock,
+      });
+      window.localStorage.setItem(
+        "user",
+        JSON.stringify({
+          type: "Employee",
+          email: "a@a",
+        })
+      );
+      const root = document.createElement("div");
+      root.setAttribute("id", "root");
+      document.body.appendChild(root);
+      router();
+    });
+    test("fetches bills from an API and fails with 404 message error", async () => {
+      const html = BillsUI({ error: "Erreur 404" });
+      document.body.innerHTML = html;
+      const message = await screen.getByText(/Erreur 404/);
+      expect(message).toBeTruthy();
+    });
+
+    test("fetches messages from an API and fails with 500 message error", async () => {
+      const html = BillsUI({ error: "Erreur 500" });
+      document.body.innerHTML = html;
+      const message = await screen.getByText(/Erreur 500/);
+      expect(message).toBeTruthy();
     });
   });
 });
