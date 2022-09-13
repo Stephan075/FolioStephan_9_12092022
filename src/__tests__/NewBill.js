@@ -68,9 +68,11 @@ describe("Given I am connected as an employee", () => {
       });
 
       expect(handleChangeFile).toHaveBeenCalled();
+
       await waitFor(() =>
         screen.getByText("Extension requise : png, jpg ou jpeg")
       );
+
       expect(input.files[0].name).toBe("image.gif");
     });
   });
