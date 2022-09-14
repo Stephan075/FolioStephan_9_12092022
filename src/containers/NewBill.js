@@ -57,7 +57,7 @@ export default class NewBill {
         })
         .catch((error) => console.error(error));
     } else {
-      console.error(`Désolé, cette extension n'est pas autorisée ${fileName}`);
+      // console.error(`Désolé, cette extension n'est pas autorisée ${fileName}`);
       fileInput.value = "";
       document.getElementById("requiredExtension").classList.add("error");
     }
@@ -65,10 +65,10 @@ export default class NewBill {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log(
-      'e.target.querySelector(`input[data-testid="datepicker"]`).value',
-      e.target.querySelector(`input[data-testid="datepicker"]`).value
-    );
+    // console.log(
+    //   'e.target.querySelector(`input[data-testid="datepicker"]`).value',
+    //   e.target.querySelector(`input[data-testid="datepicker"]`).value
+    // );
     const email = JSON.parse(localStorage.getItem("user")).email;
     const bill = {
       email,
